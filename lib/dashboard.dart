@@ -34,95 +34,70 @@ class _DashboardState extends State<Dashboard> {
 
   @override
   void initState() {
-
     super.initState();
     loadModel();
   }
 
   void resultPage(BuildContext context, String name) {
-    if(name == "Citrus Healthy"){
+    if (name == "Citrus Healthy") {
       Navigator.push(
         context,
-        MaterialPageRoute(
-
-            builder: (context) => GroundnutNitrogen()),
+        MaterialPageRoute(builder: (context) => GroundnutNitrogen()),
       );
-    }else if(name == "Citrus Nitrogen Deficiency"){
+    } else if (name == "Citrus Nitrogen Deficiency") {
       Navigator.push(
         context,
-        MaterialPageRoute(
-
-            builder: (context) => CitrusNitrogen()),
+        MaterialPageRoute(builder: (context) => CitrusNitrogen()),
       );
-    }else if(name == "Citrus Phosphorous Deficiency"){
+    } else if (name == "Citrus Phosphorous Deficiency") {
       Navigator.push(
         context,
-        MaterialPageRoute(
-
-            builder: (context) => GuavaPotassium()),
+        MaterialPageRoute(builder: (context) => GuavaPotassium()),
       );
-    }else if(name == "Citrus Potassium Deficiency"){
+    } else if (name == "Citrus Potassium Deficiency") {
       Navigator.push(
         context,
-        MaterialPageRoute(
-
-            builder: (context) => GuavaPotassium()),
+        MaterialPageRoute(builder: (context) => GuavaPotassium()),
       );
-    }else if(name == "Groundnut Healthy"){
+    } else if (name == "Groundnut Healthy") {
       Navigator.push(
         context,
-        MaterialPageRoute(
-
-            builder: (context) => GuavaPotassium()),
+        MaterialPageRoute(builder: (context) => GuavaPotassium()),
       );
-    }else if(name == "Groundnut Nitrogen Deficiency"){
+    } else if (name == "Groundnut Nitrogen Deficiency") {
       Navigator.push(
         context,
-        MaterialPageRoute(
-
-            builder: (context) => GroundnutNitrogen()),
+        MaterialPageRoute(builder: (context) => GroundnutNitrogen()),
       );
-    }else if(name == "Groundnut Pottassium Deficiency"){
+    } else if (name == "Groundnut Pottassium Deficiency") {
       Navigator.push(
         context,
-        MaterialPageRoute(
-
-            builder: (context) => GroundnutPotassium()),
+        MaterialPageRoute(builder: (context) => GroundnutPotassium()),
       );
-    }else if(name == "Groundnut Sulfur Deficiency"){
+    } else if (name == "Groundnut Sulfur Deficiency") {
       Navigator.push(
         context,
-        MaterialPageRoute(
-
-            builder: (context) => GroundnutSulfur()),
+        MaterialPageRoute(builder: (context) => GroundnutSulfur()),
       );
-    }else if(name == "Guava Healthy"){
+    } else if (name == "Guava Healthy") {
       Navigator.push(
         context,
-        MaterialPageRoute(
-
-            builder: (context) => GuavaPotassium()),
+        MaterialPageRoute(builder: (context) => GuavaPotassium()),
       );
-    }else if(name == "Guava Nitrogen Deficiency"){
+    } else if (name == "Guava Nitrogen Deficiency") {
       Navigator.push(
         context,
-        MaterialPageRoute(
-
-            builder: (context) => GuavaNitrogen()),
+        MaterialPageRoute(builder: (context) => GuavaNitrogen()),
       );
-    }else if(name == "Guava Pottassium Deficiency") {
+    } else if (name == "Guava Pottassium Deficiency") {
       Navigator.push(
         context,
-        MaterialPageRoute(
-
-            builder: (context) => GuavaPotassium()),
+        MaterialPageRoute(builder: (context) => GuavaPotassium()),
       );
+    } else {
+      showErrorProcessing(context);
     }
-//    }else {
-//      showErrorProcessing(context);
-//    }
   }
-
 
   Uint8List imageToByteListFloat32(
       img.Image image, int inputSize, double mean, double std) {
@@ -142,9 +117,7 @@ class _DashboardState extends State<Dashboard> {
 
   void showCustomDialogWithImage(BuildContext context, var labelForHighest) {
     Dialog dialogWithImage = Dialog(
-      shape: RoundedRectangleBorder(
-          borderRadius:
-          BorderRadius.circular(20.0)) ,
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.0)),
       child: Container(
         height: 360.0,
         width: 300.0,
@@ -153,15 +126,13 @@ class _DashboardState extends State<Dashboard> {
             Container(
               padding: EdgeInsets.all(12),
               alignment: Alignment.center,
-
               child: Text(
                 "We are not sure with the disorder . Do you still wish to check the disorder?",
                 style: TextStyle(
                     fontFamily: "ConcertOne-Regular",
                     color: Colors.black,
                     fontSize: 18,
-                    fontWeight: FontWeight.w400
-                ),
+                    fontWeight: FontWeight.w400),
                 textAlign: TextAlign.justify,
               ),
             ),
@@ -175,14 +146,12 @@ class _DashboardState extends State<Dashboard> {
               ),
             ),
             Padding(
-              padding: EdgeInsets.fromLTRB(0, 14, 0,0),
+              padding: EdgeInsets.fromLTRB(0, 14, 0, 0),
             ),
             Row(
-
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.end,
               children: <Widget>[
-
                 RaisedButton(
                   color: Colors.green,
                   onPressed: () {
@@ -219,7 +188,7 @@ class _DashboardState extends State<Dashboard> {
 
   Future recognizeImage(File image) async {
     print("DEBUG: Inside Recognize Image Function");
-    try{
+    try {
       double percentage = 0.0;
       pr = new ProgressDialog(context, type: ProgressDialogType.Normal);
       pr.style(
@@ -235,14 +204,15 @@ class _DashboardState extends State<Dashboard> {
         messageTextStyle: TextStyle(
             color: Colors.black, fontSize: 19.0, fontWeight: FontWeight.w600),
       );
-      var labelForHighest="";
-      double confidence=-1.00;
+      var labelForHighest = "";
+      double confidence = -1.00;
       var imageBytes = (await rootBundle.load(image.path)).buffer;
       print(imageBytes);
       img.Image oriImage = img.decodeJpg(imageBytes.asUint8List());
-      img.Image resizedImage = img.copyResize(oriImage,  width: 299, height: 299);
+      img.Image resizedImage =
+          img.copyResize(oriImage, width: 299, height: 299);
       var recognitions = await Tflite.runModelOnBinary(
-        binary: imageToByteListFloat32(resizedImage,299, 0, 255.0),
+        binary: imageToByteListFloat32(resizedImage, 299, 0, 255.0),
         numResults: 3,
         threshold: 0.4,
       );
@@ -261,19 +231,14 @@ class _DashboardState extends State<Dashboard> {
           message: "Checking Confidence..",
           maxProgress: 100.0,
           progressTextStyle: TextStyle(
-              color: Colors.black,
-              fontSize: 13.0,
-              fontWeight: FontWeight.w400),
+              color: Colors.black, fontSize: 13.0, fontWeight: FontWeight.w400),
           messageTextStyle: TextStyle(
-              color: Colors.black,
-              fontSize: 19.0,
-              fontWeight: FontWeight.w600),
+              color: Colors.black, fontSize: 19.0, fontWeight: FontWeight.w600),
         );
 
         Future.delayed(Duration(seconds: 1)).then((value) {
           percentage = percentage + 30.0;
-          pr.update(
-              progress: percentage, message: "Few more seconds...");
+          pr.update(progress: percentage, message: "Few more seconds...");
           print(percentage);
           Future.delayed(Duration(seconds: 2)).then((value) {
             percentage = percentage + 30.0;
@@ -288,7 +253,6 @@ class _DashboardState extends State<Dashboard> {
             });
           });
         });
-
       });
       Future.delayed(Duration(seconds: 6)).then((onValue) {
         print("PR status  ${pr.isShowing()}");
@@ -299,37 +263,30 @@ class _DashboardState extends State<Dashboard> {
         print("PR status  ${pr.isShowing()}");
 
         if (_recognitions.isEmpty == false) {
-
-          for(int i=0;i<_recognitions.length;i++){
+          for (int i = 0; i < _recognitions.length; i++) {
             print(_recognitions[i]);
             if (_recognitions[i]['confidence'] > confidence) {
-              labelForHighest =_recognitions[i]['label'];
+              labelForHighest = _recognitions[i]['label'];
               confidence = _recognitions[i]['confidence'];
             }
           }
 
-
           print(labelForHighest);
           print(confidence);
-          if( confidence.abs() > 0.80){
+          if (confidence.abs() > 0.80) {
             resultPage(context, labelForHighest);
-
-          } else{
-
+          } else {
             showCustomDialogWithImage(context, labelForHighest);
           }
-
         } else {
           showErrorProcessing(context);
         }
-
       });
-    }
-    on Exception {
-
+    } on Exception {
       showErrorProcessing(context);
     }
   }
+
   Future getImage() async {
     // ignore: deprecated_member_use
     var image = await ImagePicker.pickImage(source: ImageSource.gallery);
@@ -359,6 +316,7 @@ class _DashboardState extends State<Dashboard> {
       });
     }));
   }
+
   Future loadModel() async {
     print("DEBUG: Inside Load Model Function");
     Tflite.close();
@@ -375,14 +333,12 @@ class _DashboardState extends State<Dashboard> {
     }
   }
 
-
   onSelect(model) async {
     setState(() {
       _recognitions = null;
     });
     await loadModel();
-    if (_image != null)
-      predictImage(_image);
+    if (_image != null) predictImage(_image);
   }
 
   String greeting() {
@@ -395,11 +351,10 @@ class _DashboardState extends State<Dashboard> {
     }
     return 'Good Evening';
   }
+
   void showErrorProcessing(BuildContext context) {
     Dialog dialogWithImage = Dialog(
-      shape: RoundedRectangleBorder(
-          borderRadius:
-          BorderRadius.circular(20.0)) ,
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.0)),
       child: Container(
         height: 410.0,
         width: 300.0,
@@ -408,15 +363,13 @@ class _DashboardState extends State<Dashboard> {
             Container(
               padding: EdgeInsets.all(12),
               alignment: Alignment.center,
-
               child: Text(
                 "We encountered a issue while processing!\nTip: Please make sure you take the image up close and with proper lighting.",
                 style: TextStyle(
                     fontFamily: "ConcertOne-Regular",
                     color: Colors.black,
                     fontSize: 18,
-                    fontWeight: FontWeight.w400
-                ),
+                    fontWeight: FontWeight.w400),
                 textAlign: TextAlign.justify,
               ),
             ),
@@ -430,14 +383,12 @@ class _DashboardState extends State<Dashboard> {
               ),
             ),
             Padding(
-              padding: EdgeInsets.fromLTRB(0, 14, 0,0),
+              padding: EdgeInsets.fromLTRB(0, 14, 0, 0),
             ),
             Row(
-
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.end,
               children: <Widget>[
-
                 RaisedButton(
                   color: Colors.green,
                   onPressed: () {
@@ -451,7 +402,6 @@ class _DashboardState extends State<Dashboard> {
                 SizedBox(
                   width: 20,
                 ),
-
               ],
             ),
           ],
@@ -461,10 +411,11 @@ class _DashboardState extends State<Dashboard> {
     showDialog(
         context: context, builder: (BuildContext context) => dialogWithImage);
   }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body:ListView(
+      body: ListView(
         children: <Widget>[
           Padding(
             padding: EdgeInsets.only(left: 25, right: 14, top: 30, bottom: 40),
@@ -480,7 +431,7 @@ class _DashboardState extends State<Dashboard> {
                           TextSpan(
                               text: greeting(),
                               style:
-                              TextStyle(color: Colors.black, fontSize: 20)),
+                                  TextStyle(color: Colors.black, fontSize: 20)),
                           TextSpan(
                               text: ' User!',
                               style: TextStyle(
@@ -501,50 +452,24 @@ class _DashboardState extends State<Dashboard> {
                   radius: 30,
                   child: ClipOval(
                       child: Image.asset(
-                        'assets/boy.jpeg',
-                        // Photo from https://unsplash.com/photos/QXevDflbl8A
-                        fit: BoxFit.cover,
-                        width: 55.0,
-                        height: 55.0,
-                      )),
+                    'assets/boy.jpeg',
+                    // Photo from https://unsplash.com/photos/QXevDflbl8A
+                    fit: BoxFit.cover,
+                    width: 55.0,
+                    height: 55.0,
+                  )),
                 ),
               ],
             ),
           ),
           DisorderList(),
           SizedBox(height: 10),
-
-//          Align(
-//            alignment: Alignment.center,
-//            child: DefaultTabController(
-//              length: 1,
-//              child: Column(
-//                mainAxisSize: MainAxisSize.min,
-//                children: <Widget>[
-//                  Container(
-//                    margin: EdgeInsets.only(top: 10),
-//                    height: MediaQuery.of(context).size.height*2,
-//                    child: TabBarView(
-//                      children: <Widget>[
-//                        ScreenGeneration(),
-//                      ],
-//                    ),
-//                  ),
-//                ],
-//              ),
-//            ),
-//          ),
-//
-
-
         ],
       ),
       floatingActionButton: SpeedDial(
         animatedIcon: AnimatedIcons.menu_close,
         animatedIconTheme: IconThemeData(color: Colors.white, size: 25),
-        // this is ignored if animatedIcon is non null
-        // child: Icon(Icons.add),
-        visible: dialVisible ,
+        visible: dialVisible,
         curve: Curves.bounceInOut,
         onOpen: () => print('OPENING DIAL'),
         onClose: () => print('DIAL CLOSED'),
@@ -557,19 +482,25 @@ class _DashboardState extends State<Dashboard> {
         shape: CircleBorder(),
         children: [
           SpeedDialChild(
-              child: Icon(Icons.camera, size: 24,),
+              child: Icon(
+                Icons.camera,
+                size: 24,
+              ),
               backgroundColor: Colors.redAccent,
               label: 'Camera',
-              labelStyle: TextStyle(fontSize: 18.0,),
-              onTap: () => getCamera()
-          ),
+              labelStyle: TextStyle(
+                fontSize: 18.0,
+              ),
+              onTap: () => getCamera()),
           SpeedDialChild(
-              child: Icon(Icons.image, size: 24,),
+              child: Icon(
+                Icons.image,
+                size: 24,
+              ),
               backgroundColor: Colors.blueAccent,
               label: 'Gallery',
               labelStyle: TextStyle(fontSize: 18.0),
-              onTap: () =>  getImage()
-          ),
+              onTap: () => getImage()),
         ],
       ),
     );
